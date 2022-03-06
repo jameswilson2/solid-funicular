@@ -379,15 +379,21 @@ def removefromDB():
     con = sl.connect(DatabaseName)
     with con:
       c = con.cursor()
-      c.execute(''' DROP TABLE {tablename} '''.format(tablename=toremove))
+      try:
+        c.execute(''' DROP TABLE {tablename} '''.format(tablename=toremove))
+      except:
+        verboseprint("{table} is already deleted.".format(table=toremove))
+      c.execute(''' DELETE FROM PRODUCTS WHERE tableloc = '{tablename}' '''.format(tablename=toremove))
     con.commit()
     con.close()
   else:
     return
 
 def runBoth(aurl, eurl):
-  posttodb(getamazonPrice(aurl))
-  posttodb(getebayPrice(eurl))
+  if not aurl == "":
+    posttodb(getamazonPrice(aurl))
+  if not eurl == "":
+   posttodb(getebayPrice(eurl))
 
 def argparser():
   parser = argparse.ArgumentParser(
