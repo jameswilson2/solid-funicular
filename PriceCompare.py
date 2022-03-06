@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import numpy as np
 from currency_converter import CurrencyConverter
+import time
 
 class product:
   def __init__(self, name, cost, currency, url, session):
@@ -212,6 +213,8 @@ def runsched():
           aurl = value
       try:
         runBoth(aurl, eurl)
+        verboseprint("Sleeping for 5 seconds so Amazon don't block us.")
+        time.sleep(5)
       except:
         continue
 
